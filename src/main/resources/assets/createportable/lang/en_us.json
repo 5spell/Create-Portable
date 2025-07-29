@@ -1,0 +1,13 @@
+{
+  "itemGroup.createportable": "Example Mod Tab",
+  "block.createportable.example_block": "Example Block",
+  "item.createportable.example_item": "Example Item",
+
+  "createportable.configuration.title": "Create: Portable Configs",
+  "createportable.configuration.section.createportable.common.toml": "Create: Portable Configs",
+  "createportable.configuration.section.createportable.common.toml.title": "Create: Portable Configs",
+  "createportable.configuration.items": "Item List",
+  "createportable.configuration.logDirtBlock": "Log Dirt Block",
+  "createportable.configuration.magicNumberIntroduction": "Magic Number Text",
+  "createportable.configuration.magicNumber": "Magic Number"
+}
