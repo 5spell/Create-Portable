@@ -31,7 +31,9 @@ public class SpringboxItem extends Item {
 
     @SubscribeEvent
     public static void onTooltip(ItemTooltipEvent event){
-        event.getToolTip().add(Component.literal("Stored SU/t: " + getStoredSU(event.getItemStack())));
+        if (event.getItemStack().getItem() == ModItems.SPRINGBOX_ENTRY.get()) {
+            event.getToolTip().add(Component.literal("Stored SU/t: " + getStoredSU(event.getItemStack())));
+        }
     }
 
 }
