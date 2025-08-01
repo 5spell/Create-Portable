@@ -1,6 +1,7 @@
 package net.vspell.createportable;
 
 import com.simibubi.create.Create;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.Registrate;
 import net.vspell.createportable.block.ModBlockEntities;
 import net.vspell.createportable.block.ModBlocks;
@@ -24,14 +25,14 @@ public class CreatePortable {
     public static final String MOD_ID = "createportable";
     public static final String NAME = Create.NAME + ": Portable";
 
-    public static final Registrate REGISTRATE = Registrate.create(MOD_ID);
+    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID);
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public CreatePortable(IEventBus modEventBus, ModContainer modContainer) {
         NeoForge.EVENT_BUS.register(this);
 
+        REGISTRATE.registerEventListeners(modEventBus);
         registerEverything(modEventBus);
-
 
         modEventBus.addListener(this::commonSetup);
     }

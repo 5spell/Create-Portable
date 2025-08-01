@@ -9,8 +9,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.vspell.createportable.CreatePortable;
 import net.vspell.createportable.block.winder.WinderBlock;
 
-import static com.simibubi.create.foundation.data.BlockStateGen.axisBlock;
-
 public class ModBlocks {
 
     public static final BlockEntry<WinderBlock> WINDER_ENTRY = CreatePortable.REGISTRATE.block("winder", WinderBlock::new)
@@ -22,7 +20,6 @@ public class ModBlocks {
             .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(AllSpriteShifts.ANDESITE_CASING)))
             .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, AllSpriteShifts.ANDESITE_CASING,
                     (s, f) -> f.getAxis() == s.getValue(WinderBlock.AXIS))))
-            .blockstate((c, p) -> axisBlock(c, p, $ -> AssetLookup.partialBaseModel(c, p), true))
             .register();
 
     public static void register() {}

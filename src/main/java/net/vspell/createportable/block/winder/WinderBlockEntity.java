@@ -19,7 +19,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
         float speed = getSpeed();
         if (speed != 0){
             //TODO Charging logic
-            CreatePortable.LOGGER.info("A WINDER  IS BEING POWERED HOORAAAY YIPPPEEE");
+            CreatePortable.LOGGER.info("A WINDER IS BEING POWERED HOORAAAY YIPPPEEE");
         }
 
     }
