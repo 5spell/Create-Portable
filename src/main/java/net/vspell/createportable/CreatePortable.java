@@ -2,7 +2,10 @@ package net.vspell.createportable;
 
 import com.simibubi.create.Create;
 import com.tterrag.registrate.Registrate;
+import net.vspell.createportable.block.ModBlockEntities;
+import net.vspell.createportable.block.ModBlocks;
 import net.vspell.createportable.component.ModComponents;
+import net.vspell.createportable.item.ModItems;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -34,8 +37,10 @@ public class CreatePortable {
     }
 
     private void registerEverything(IEventBus modEventBus){
-        ModComponents.register(modEventBus);
         ModItems.register();
+        ModBlocks.register();
+        ModBlockEntities.register();
+        ModComponents.register(modEventBus);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

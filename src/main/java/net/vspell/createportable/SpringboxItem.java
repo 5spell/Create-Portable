@@ -7,6 +7,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.vspell.createportable.component.ModComponents;
+import net.vspell.createportable.item.ModItems;
 
 @EventBusSubscriber
 public class SpringboxItem extends Item {

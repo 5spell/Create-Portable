@@ -1,7 +1,9 @@
-package net.vspell.createportable;
+package net.vspell.createportable.item;
 
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.item.Rarity;
+import net.vspell.createportable.CreatePortable;
+import net.vspell.createportable.SpringboxItem;
 
 public class ModItems {
 
@@ -9,6 +11,5 @@ public class ModItems {
             .properties(p -> p.stacksTo(1).rarity(Rarity.EPIC))
             .register();
 
-    public static void register() {
-    }
+    public static void register() {}
 }
