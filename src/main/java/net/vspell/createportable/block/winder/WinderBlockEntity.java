@@ -38,7 +38,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     // reading the mode from NBT
     @Override
     protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        super.write(compound, registries, clientPacket);
+        super.read(compound, registries, clientPacket);
         mode = WinderMode.valueOf(compound.getString("Mode"));
     }
 
