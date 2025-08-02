@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumMap;
 import java.util.function.Consumer;
 
 public class WinderVisual extends KineticBlockEntityVisual<WinderBlockEntity> {

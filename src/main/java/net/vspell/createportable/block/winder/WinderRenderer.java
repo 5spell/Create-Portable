@@ -26,6 +26,7 @@ public class WinderRenderer extends KineticBlockEntityRenderer<WinderBlockEntity
 
         final BlockPos pos = be.getBlockPos();
         float time = AnimationTickHolder.getRenderTime(be.getLevel());
+
         final Direction shaftDirection = be.getBlockState().getValue(WinderBlock.FACING);
         final Direction.Axis axis = shaftDirection.getAxis();
 

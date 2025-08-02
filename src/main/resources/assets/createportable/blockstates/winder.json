@@ -1,10 +1,17 @@
 {
     "variants": {
-        "axis=x": { "model": "createportable:block/winder/winder_empty", "x": 90, "y": 90 },
-        "axis=y": { "model": "createportable:block/winder/winder_empty" },
-        "axis=z": { "model": "createportable:block/winder/winder_empty", "x": 90 },
-        "full_axis=x": { "model": "createportable:block/winder/winder_loaded", "x": 90, "y": 90},
-        "full_axis=y": { "model": "createportable:block/winder/winder_loaded" },
-        "full_axis=z": { "model": "createportable:block/winder/winder_loaded", "x": 90 }
+        "facing=north,filled=false": { "model": "createportable:block/winder/winder_empty" },
+        "facing=south,filled=false": { "model": "createportable:block/winder/winder_empty", "y": 180 },
+        "facing=west,filled=false":  { "model": "createportable:block/winder/winder_empty", "y": 270 },
+        "facing=east,filled=false":  { "model": "createportable:block/winder/winder_empty", "y": 90 },
+        "facing=up,filled=false":    { "model": "createportable:block/winder/winder_empty", "x": 270 },
+        "facing=down,filled=false":  { "model": "createportable:block/winder/winder_empty", "x": 90 },
+
+        "facing=north,filled=true":  { "model": "createportable:block/winder/winder_loaded" },
+        "facing=south,filled=true":  { "model": "createportable:block/winder/winder_loaded", "y": 180 },
+        "facing=west,filled=true":   { "model": "createportable:block/winder/winder_loaded", "y": 270 },
+        "facing=east,filled=true":   { "model": "createportable:block/winder/winder_loaded", "y": 90 },
+        "facing=up,filled=true":     { "model": "createportable:block/winder/winder_loaded", "x": 270 },
+        "facing=down,filled=true":   { "model": "createportable:block/winder/winder_loaded", "x": 90 }
     }
 }
