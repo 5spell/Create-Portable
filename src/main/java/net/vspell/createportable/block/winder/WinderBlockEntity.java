@@ -17,14 +17,11 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
         DISCHARGING;
     }
 
-    public static final BooleanProperty WINDER_FILLED = BooleanProperty.create("winder_filled");
-    public boolean WinderFilled = false;
+    private WinderMode mode = WinderMode.CHARGING;
+
     public int charge = 0;
     public int maxcharge = 2000;
     public int BlockStress = 20; // TODO: add variable stress
-
-
-    private WinderMode mode = WinderMode.CHARGING;
 
     public WinderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -37,8 +34,12 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
         float speed = getSpeed();
         if (speed != 0){
+
+            boolean isFilled = getBlockState().getValue(WinderBlock.FILLED); // new FILLED property
+
             CreatePortable.LOGGER.info("A WINDER IS BEING POWERED HOORAAAY YIPPPEEE");
-            if(WinderFilled && (charge < maxcharge)) {
+
+            if  (isFilled && (charge < maxcharge)) {
                 charge = charge + BlockStress;
             }
         }
@@ -90,13 +91,13 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
     public void InsertSpringbox(int Springbox_Charge)
     {
-        WinderFilled = true;
+        getBlockState().setValue(WinderBlock.FILLED, true);
         charge = Springbox_Charge;
     }
 
     public void pop()
     {
-        WinderFilled = false;
+        getBlockState().setValue(WinderBlock.FILLED, false);
     }
 
 }
