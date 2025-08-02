@@ -13,10 +13,11 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
     public enum WinderMode {
         CHARGING,
-        DISCHARGING;
+        DISCHARGING,
+        EMPTY;
     }
 
-    private WinderMode mode = WinderMode.CHARGING;
+    private WinderMode mode = WinderMode.EMPTY;
 
 
     public WinderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
