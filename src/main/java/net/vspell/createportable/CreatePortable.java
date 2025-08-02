@@ -2,7 +2,6 @@ package net.vspell.createportable;
 
 import com.simibubi.create.Create;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.Registrate;
 import net.vspell.createportable.block.ModBlockEntities;
 import net.vspell.createportable.block.ModBlocks;
 import net.vspell.createportable.component.ModComponents;
