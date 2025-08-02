@@ -20,6 +20,9 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     public static final BooleanProperty WINDER_FILLED = BooleanProperty.create("winder_filled");
     public boolean WinderFilled = false;
     public int charge = 0;
+    public int maxcharge = 2000;
+    public int BlockStress = 20; // TODO: add variable stress
+
 
     private WinderMode mode = WinderMode.CHARGING;
 
@@ -34,8 +37,10 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
         float speed = getSpeed();
         if (speed != 0){
-            //TODO Charging logic
             CreatePortable.LOGGER.info("A WINDER IS BEING POWERED HOORAAAY YIPPPEEE");
+            if(WinderFilled && (charge < maxcharge)) {
+                charge = charge + BlockStress;
+            }
         }
     }
 

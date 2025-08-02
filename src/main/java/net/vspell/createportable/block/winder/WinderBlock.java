@@ -100,9 +100,10 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
             else if (itemInHand.isEmpty())
             {
                 CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED by an empty hand");
-                if(!((WinderBlockEntity) blockEntity).WinderFilled)
+                if(((WinderBlockEntity) blockEntity).WinderFilled)
                 {
-                    ItemStack itemToGive = new ItemStack(ModItems.SPRINGBOX_ENTRY.asItem());
+                    ItemStack itemToGive = new ItemStack(ModItems.SPRINGBOX_ENTRY.get());
+                    player.addItem(itemToGive);
                     ((WinderBlockEntity) blockEntity).pop();
                 }
 
