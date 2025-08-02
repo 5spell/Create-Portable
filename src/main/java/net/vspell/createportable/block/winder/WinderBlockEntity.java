@@ -78,4 +78,11 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
         return mode;
     }
 
+    /*
+    public void InsertSpringbox(int Springbox_Charge)
+    {
+
+    }
+    */
+
 }
