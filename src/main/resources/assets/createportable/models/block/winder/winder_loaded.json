@@ -3,11 +3,11 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"0": "createportable:winder_top",
-		"1": "createportable:winder_slot",
-		"3": "createportable:gearbox",
-		"6": "createportable:springbox",
-		"particle": "createportable:winder_top"
+		"0": "createportable:block/winder/winder_top",
+		"1": "createportable:block/winder/winder_slot",
+		"2": "createportable:block/winder/gearbox",
+		"3": "createportable:item/springbox/springbox",
+		"particle": "createportable:block/winder/winder_top"
 	},
 	"elements": [
 		{
@@ -30,7 +30,7 @@
 			"to": [15.05, 14, 9.05],
 			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 10]},
 			"faces": {
-				"north": {"uv": [15, 2, 1, 14], "texture": "#3"},
+				"north": {"uv": [15, 2, 1, 14], "texture": "#2"},
 				"east": {"uv": [12, 2, 4, 14], "texture": "#0"},
 				"south": {"uv": [12, 2, 4, 14], "texture": "#0"},
 				"west": {"uv": [12, 2, 4, 14], "texture": "#0"}
@@ -79,7 +79,6 @@
 			}
 		},
 		{
-			"name": "Slot",
 			"from": [3, 3, 8],
 			"to": [13, 13, 10],
 			"rotation": {"angle": 0, "axis": "y", "origin": [3, 3, 10]},
@@ -98,12 +97,12 @@
 			"to": [10, 9, 13],
 			"rotation": {"angle": 0, "axis": "y", "origin": [6, 7, 7]},
 			"faces": {
-				"north": {"uv": [0, 2, 4, 4], "texture": "#6"},
-				"east": {"uv": [6, 0, 12, 2], "texture": "#6"},
-				"south": {"uv": [12, 0, 16, 2], "texture": "#6"},
-				"west": {"uv": [0, 0, 6, 2], "texture": "#6"},
-				"up": {"uv": [10, 5, 14, 11], "texture": "#6"},
-				"down": {"uv": [6, 5, 10, 11], "texture": "#6"}
+				"north": {"uv": [0, 2, 4, 4], "texture": "#3"},
+				"east": {"uv": [6, 0, 12, 2], "texture": "#3"},
+				"south": {"uv": [12, 0, 16, 2], "texture": "#3"},
+				"west": {"uv": [0, 0, 6, 2], "texture": "#3"},
+				"up": {"uv": [10, 5, 14, 11], "texture": "#3"},
+				"down": {"uv": [6, 5, 10, 11], "texture": "#3"}
 			}
 		}
 	]

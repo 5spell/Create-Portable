@@ -37,6 +37,7 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
+
     public WinderBlock(Properties properties) {
         super(properties);
         registerDefaultState(this.defaultBlockState()
