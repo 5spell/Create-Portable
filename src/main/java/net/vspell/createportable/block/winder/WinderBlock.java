@@ -37,7 +37,6 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
-
     public WinderBlock(Properties properties) {
         super(properties);
         registerDefaultState(this.defaultBlockState()
@@ -72,18 +71,25 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
         return ModBlockEntities.WINDER_ENTITY_ENTRY.get();
     }
 
+    @Override
     protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        BlockEntity itemstack = level.getBlockEntity(pos);
-        CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED");
-        if (itemstack instanceof WinderBlockEntity) {
-            ItemStack item_inhand = player.getItemInHand(hand);
-            if (item_inhand.is(ModItems.SPRINGBOX_ENTRY)) {
-                if (!level.isClientSide) {
-                    return ItemInteractionResult.SUCCESS;
-                }
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+
+        if (blockEntity instanceof WinderBlockEntity) {
+            ItemStack itemInHand = player.getItemInHand(hand);
+
+            if (itemInHand.is(ModItems.SPRINGBOX_ENTRY.get())) {
                 CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED by a springbox");
+                int storedSU = SpringboxItem.getStoredSU(itemInHand);
+                if(!((WinderBlockEntity) blockEntity).WinderFilled)
+                {
+                    ((WinderBlockEntity) blockEntity).InsertSpringbox(SpringboxItem.getStoredSU(itemInHand));
+                    itemInHand.shrink(1);
+                }
+
                 return ItemInteractionResult.CONSUME;
             }
+            CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED with something else");
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }

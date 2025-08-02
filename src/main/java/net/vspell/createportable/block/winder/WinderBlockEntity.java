@@ -6,6 +6,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.vspell.createportable.CreatePortable;
 
 
@@ -16,8 +17,10 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
         DISCHARGING;
     }
 
-    private WinderMode mode = WinderMode.CHARGING;
+    public static final BooleanProperty WINDER_FILLED = BooleanProperty.create("winder_filled");
+    public boolean WinderFilled = false;
 
+    private WinderMode mode = WinderMode.CHARGING;
 
     public WinderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -78,11 +81,11 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
         return mode;
     }
 
-    /*
+
     public void InsertSpringbox(int Springbox_Charge)
     {
-
+        WinderFilled = true;
     }
-    */
+
 
 }
