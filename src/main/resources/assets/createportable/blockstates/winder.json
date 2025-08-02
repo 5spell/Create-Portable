@@ -1,7 +1,10 @@
 {
     "variants": {
-        "axis=x": { "model": "createportable:block/winder/block", "x": 90, "y": 90 },
-        "axis=y": { "model": "createportable:block/winder/block" },
-        "axis=z": { "model": "createportable:block/winder/block", "x": 90 }
+        "axis=x": { "model": "createportable:block/winder/winder_empty", "x": 90, "y": 90 },
+        "axis=y": { "model": "createportable:block/winder/winder_empty" },
+        "axis=z": { "model": "createportable:block/winder/winder_empty", "x": 90 },
+        "full_axis=x": { "model": "createportable:block/winder/winder_loaded", "x": 90, "y": 90},
+        "full_axis=y": { "model": "createportable:block/winder/winder_loaded" },
+        "full_axis=z": { "model": "createportable:block/winder/winder_loaded", "x": 90 }
     }
 }
