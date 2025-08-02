@@ -4,16 +4,23 @@ import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CampfireCookingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -21,11 +28,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.vspell.createportable.CreatePortable;
 import net.vspell.createportable.SpringboxItem;
 import net.vspell.createportable.block.ModBlockEntities;
+import net.vspell.createportable.item.ModItems;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class WinderBlock extends RotatedPillarKineticBlock implements IBE<WinderBlockEntity> {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+
 
     public WinderBlock(Properties properties) {
         super(properties);
@@ -61,23 +72,19 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
         return ModBlockEntities.WINDER_ENTITY_ENTRY.get();
     }
 
-    @Override
     protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
-        BlockEntity blockEntity = level.getBlockEntity(pos);
-
-        if (blockEntity instanceof WinderBlockEntity winderBlockEntity) {
-            CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED");
-            CreatePortable.LOGGER.info("MODE: {}", winderBlockEntity.getMode());
-            if (stack.getItem() instanceof SpringboxItem) {
-                winderBlockEntity.toggleMode();
-                CreatePortable.LOGGER.info("MODE: {}", winderBlockEntity.getMode());
+        BlockEntity itemstack = level.getBlockEntity(pos);
+        CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED");
+        if (itemstack instanceof WinderBlockEntity) {
+            ItemStack item_inhand = player.getItemInHand(hand);
+            if (item_inhand.is(ModItems.SPRINGBOX_ENTRY)) {
+                if (!level.isClientSide) {
+                    return ItemInteractionResult.SUCCESS;
+                }
+                CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED by a springbox");
+                return ItemInteractionResult.CONSUME;
             }
-        } else {
-            CreatePortable.LOGGER.info("ts some bullshit bru");
         }
-
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-
     }
-
 }
