@@ -19,6 +19,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
     public static final BooleanProperty WINDER_FILLED = BooleanProperty.create("winder_filled");
     public boolean WinderFilled = false;
+    public int charge = 0;
 
     private WinderMode mode = WinderMode.CHARGING;
 
@@ -85,7 +86,12 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     public void InsertSpringbox(int Springbox_Charge)
     {
         WinderFilled = true;
+        charge = Springbox_Charge;
     }
 
+    public void pop()
+    {
+        WinderFilled = false;
+    }
 
 }

@@ -79,7 +79,8 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
         if (blockEntity instanceof WinderBlockEntity) {
             ItemStack itemInHand = player.getItemInHand(hand);
 
-            if (itemInHand.is(ModItems.SPRINGBOX_ENTRY.get())) {
+            if (itemInHand.is(ModItems.SPRINGBOX_ENTRY.get()))
+            {
                 CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED by a springbox");
                 int storedSU = SpringboxItem.getStoredSU(itemInHand);
                 if(!((WinderBlockEntity) blockEntity).WinderFilled)
@@ -90,7 +91,18 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
 
                 return ItemInteractionResult.CONSUME;
             }
+            else if (itemInHand.isEmpty())
+            {
+                CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED by an empty hand");
+                if(!((WinderBlockEntity) blockEntity).WinderFilled)
+                {
+                    ItemStack itemToGive = new ItemStack(ModItems.SPRINGBOX_ENTRY.asItem());
+                    ((WinderBlockEntity) blockEntity).pop();
+                }
+
+            }
             CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED with something else");
+
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
