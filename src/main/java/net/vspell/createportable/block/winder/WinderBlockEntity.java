@@ -74,7 +74,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
     @Override
     public float getGeneratedSpeed(){
-        if (getMode() == WinderMode.DISCHARGING) { // temp
+        if (false) { // temp
             return 16;
         }
         return 0;
