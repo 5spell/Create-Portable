@@ -20,7 +20,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     private WinderMode mode = WinderMode.CHARGING;
 
     public boolean isPowered = false;
-    public int StoredSU = 0;
+    public int StoredSU = 0; //TODO: make SU stored on disk
     public int MaxStoredSU = 2000;
     public int BlockStress = 20; // TODO: add variable stress
     public KineticNetwork network;
@@ -34,7 +34,13 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
     @Override
     public boolean isSource() {
-        return source != null && mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0;
+        //return source != null && mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0;
+        //return source != null && readyToGenerate();
+        return mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0;
+    }
+
+    private boolean readyToGenerate() {
+        return mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0;
     }
 
     @Override
@@ -47,7 +53,6 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
         assert level != null;
         isPowered = level.hasNeighborSignal(worldPosition);
-
         if (source == null || !hasNetwork()) {
             return;
         }
@@ -66,7 +71,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
             if (network != null) {
                 NetworkStress = network.getActualStressOf(this);
                 NetworkCapacity = network.getActualCapacityOf(this);
-                StoredSU -= (int)(NetworkStress - NetworkCapacity);
+                StoredSU = Math.max(0, StoredSU - (int)(NetworkStress - NetworkCapacity));
             }
         }
     }
@@ -122,7 +127,8 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
     public void InsertSpringbox(int Springbox_Charge)
     {
-        getBlockState().setValue(WinderBlock.FILLED, true);
+        assert level != null;
+        level.setBlock(worldPosition, getBlockState().setValue(WinderBlock.FILLED, true), 3);
         StoredSU = Springbox_Charge;
     }
 }
