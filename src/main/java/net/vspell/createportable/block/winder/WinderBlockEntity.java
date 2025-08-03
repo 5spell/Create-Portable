@@ -2,7 +2,6 @@ package net.vspell.createportable.block.winder;
 
 import com.simibubi.create.content.kinetics.KineticNetwork;
 import com.simibubi.create.content.kinetics.base.DirectionalShaftHalvesBlockEntity;
-import com.simibubi.create.foundation.item.KineticStats;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -15,7 +14,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
     public enum WinderMode {
         CHARGING,
-        DISCHARGING;
+        DISCHARGING
     }
 
     private WinderMode mode = WinderMode.CHARGING;
@@ -24,10 +23,9 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     public int StoredSU = 0;
     public int MaxStoredSU = 2000;
     public int BlockStress = 20; // TODO: add variable stress
-    public KineticNetwork network = this.getOrCreateNetwork();
+    public KineticNetwork network;
     public float NetworkStress;
     public float NetworkCapacity;
-
 
     public WinderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -35,30 +33,37 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     }
 
     @Override
+    public boolean isSource() {
+        return source != null && mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0;
+    }
+
+    @Override
     public void tick() {
         super.tick();
-        isPowered= level.hasNeighborSignal(worldPosition);
-        float speed = getSpeed();
-        if (speed != 0){
 
-            boolean isFilled = getBlockState().getValue(WinderBlock.FILLED); // new FILLED property
+        assert level != null;
+        isPowered = level.hasNeighborSignal(worldPosition);
 
-            //CreatePortable.LOGGER.info("A WINDER IS BEING POWERED HOORAAAY YIPPPEEE");
-
-            if  (isFilled && (StoredSU < MaxStoredSU)) {
-                StoredSU = StoredSU + BlockStress;
-            }
+        if (source == null || !hasNetwork()) {
+            return;
         }
-        else
-        {
-            setMode(WinderMode.DISCHARGING);
-            if(network != null)
-            {
-                NetworkStress = this.network.getActualStressOf(this);
-                NetworkCapacity = this.network.getActualCapacityOf(this);
-                StoredSU = StoredSU - (int)(NetworkStress - NetworkCapacity);
-            }
 
+        float speed = getSpeed();
+
+        if (speed != 0) {
+            boolean isFilled = getBlockState().getValue(WinderBlock.FILLED);
+            if (isFilled && StoredSU < MaxStoredSU) {
+                StoredSU += BlockStress;
+            }
+        } else {
+            setMode(WinderMode.DISCHARGING);
+            network = getOrCreateNetwork();
+
+            if (network != null) {
+                NetworkStress = network.getActualStressOf(this);
+                NetworkCapacity = network.getActualCapacityOf(this);
+                StoredSU -= (int)(NetworkStress - NetworkCapacity);
+            }
         }
     }
 
@@ -79,12 +84,14 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     @Override
     public float getGeneratedSpeed(){
         CreatePortable.LOGGER.info(
-                "Mode: " +
-                mode.toString() + " IsPowered: " +
-                isPowered + " StoredSU: " + StoredSU);
-
+                "Mode: " + mode.toString() +
+                "\nIsPowered: " + isPowered +
+                "\nStoredSU: " + StoredSU);
+        if (source == null) {
+            return 0;
+        }
         if (mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0)
-        { //TODO: figure out discharge conditions
+        { //TODO: fix crashes
             CreatePortable.LOGGER.info("Winder should be generating");
             return 16;
         }
@@ -109,20 +116,9 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
         sendData();
     }
 
-    public WinderMode getMode() {
-        return mode;
-    }
-
-
     public void InsertSpringbox(int Springbox_Charge)
     {
         getBlockState().setValue(WinderBlock.FILLED, true);
         StoredSU = Springbox_Charge;
     }
-
-    public void pop()
-    {
-        StoredSU = 0;
-    }
-
 }

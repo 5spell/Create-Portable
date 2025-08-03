@@ -113,7 +113,7 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
                     ItemStack itemToGive = new ItemStack(ModItems.SPRINGBOX_ENTRY.get());
                     itemToGive.set(ModComponents.STORED_SU.get(), ((WinderBlockEntity) blockEntity).StoredSU);
                     player.addItem(itemToGive);
-                    ((WinderBlockEntity) blockEntity).pop(); // pop repurposed to reset StoredSU when emptied
+                    ((WinderBlockEntity) blockEntity).StoredSU = 0;
                     level.setBlock(pos, state.setValue(FILLED, false), 3); // the new way
                 }
 
