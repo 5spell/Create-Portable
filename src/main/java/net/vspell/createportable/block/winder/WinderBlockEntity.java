@@ -24,9 +24,11 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     public int StoredSU = 0;
     public int MaxStoredSU = 2000;
     public int BlockStress = 20; // TODO: add variable stress
-    public KineticNetwork network = this.network;
+    public KineticNetwork network = this.getOrCreateNetwork();
     public float NetworkStress;
     public float NetworkCapacity;
+
+
     public WinderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
 
@@ -76,13 +78,17 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
     @Override
     public float getGeneratedSpeed(){
-        if (/*getMode() == WinderMode.DISCHARGING &&
-            getBlockState().getValue(WinderBlock.FILLED) &&
-            speed == 0*/
-            isPowered)
+        CreatePortable.LOGGER.info(
+                "Mode: " +
+                mode.toString() + " IsPowered: " +
+                isPowered + " StoredSU: " + StoredSU);
+
+        if (mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0)
         { //TODO: figure out discharge conditions
+            CreatePortable.LOGGER.info("Winder should be generating");
             return 16;
         }
+        CreatePortable.LOGGER.info("Winder should not be generating");
         return 0;
     }
 
