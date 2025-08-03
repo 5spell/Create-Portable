@@ -41,6 +41,10 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     public void tick() {
         super.tick();
 
+        if (source == null) {
+            CreatePortable.LOGGER.warn("Winder source is null on tick.");
+        }
+
         assert level != null;
         isPowered = level.hasNeighborSignal(worldPosition);
 
@@ -87,7 +91,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
                 "Mode: " + mode.toString() +
                 "\nIsPowered: " + isPowered +
                 "\nStoredSU: " + StoredSU);
-        if (source == null) {
+        if (level == null || source == null) {
             return 0;
         }
         if (mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0)
