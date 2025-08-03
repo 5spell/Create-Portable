@@ -20,6 +20,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
     private WinderMode mode = WinderMode.CHARGING;
 
+    public boolean isPowered = false;
     public int StoredSU = 0;
     public int MaxStoredSU = 2000;
     public int BlockStress = 20; // TODO: add variable stress
@@ -34,7 +35,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     @Override
     public void tick() {
         super.tick();
-
+        isPowered= level.hasNeighborSignal(worldPosition);
         float speed = getSpeed();
         if (speed != 0){
 
@@ -48,13 +49,14 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
         }
         else
         {
+            setMode(WinderMode.DISCHARGING);
             if(network != null)
             {
                 NetworkStress = this.network.getActualStressOf(this);
                 NetworkCapacity = this.network.getActualCapacityOf(this);
+                StoredSU = StoredSU - (int)(NetworkStress - NetworkCapacity);
             }
-            setMode(WinderMode.DISCHARGING);
-            StoredSU = StoredSU - (int)(NetworkStress - NetworkCapacity);
+
         }
     }
 
@@ -74,7 +76,11 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
     @Override
     public float getGeneratedSpeed(){
-        if (false) { // temp
+        if (/*getMode() == WinderMode.DISCHARGING &&
+            getBlockState().getValue(WinderBlock.FILLED) &&
+            speed == 0*/
+            isPowered)
+        { //TODO: figure out discharge conditions
             return 16;
         }
         return 0;
