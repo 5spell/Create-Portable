@@ -25,7 +25,9 @@ public class SpringboxItem extends Item {
         return 0;
     }
 
-    private static void setStoredSU(ItemStack stack, int su){
+    public static void setStoredSU(ItemStack stack, int su)
+    {
+
         stack.set(ModComponents.STORED_SU.get(), su);
     }
 

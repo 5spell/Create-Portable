@@ -6,7 +6,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.vspell.createportable.CreatePortable;
 
 
@@ -19,8 +18,8 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
     private WinderMode mode = WinderMode.CHARGING;
 
-    public int charge = 0;
-    public int maxcharge = 2000;
+    public int StoredSU = 0;
+    public int MaxStoredSU = 2000;
     public int BlockStress = 20; // TODO: add variable stress
 
     public WinderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -39,8 +38,8 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
             CreatePortable.LOGGER.info("A WINDER IS BEING POWERED HOORAAAY YIPPPEEE");
 
-            if  (isFilled && (charge < maxcharge)) {
-                charge = charge + BlockStress;
+            if  (isFilled && (StoredSU < MaxStoredSU)) {
+                StoredSU = StoredSU + BlockStress;
             }
         }
     }
@@ -92,12 +91,12 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     public void InsertSpringbox(int Springbox_Charge)
     {
         getBlockState().setValue(WinderBlock.FILLED, true);
-        charge = Springbox_Charge;
+        StoredSU = Springbox_Charge;
     }
 
     public void pop()
     {
-        getBlockState().setValue(WinderBlock.FILLED, false);
+        StoredSU = 0;
     }
 
 }

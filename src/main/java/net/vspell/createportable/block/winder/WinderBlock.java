@@ -23,6 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.vspell.createportable.CreatePortable;
 import net.vspell.createportable.SpringboxItem;
 import net.vspell.createportable.block.ModBlockEntities;
+import net.vspell.createportable.component.ModComponents;
 import net.vspell.createportable.item.ModItems;
 import org.jetbrains.annotations.NotNull;
 
@@ -87,7 +88,7 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
 
             if (itemInHand.is(ModItems.SPRINGBOX_ENTRY.get()))
             {
-                CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED by a springbox");
+                //CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED by a springbox");
 
                 int storedSU = SpringboxItem.getStoredSU(itemInHand);
                 if(!state.getValue(FILLED)) // FILLED is the new filled property
@@ -106,17 +107,18 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
             }
             else if (itemInHand.isEmpty())
             {
-                CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED by an empty hand");
+                //CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED by an empty hand");
                 if(state.getValue(FILLED)) // FILLED is the new filled property
                 {
                     ItemStack itemToGive = new ItemStack(ModItems.SPRINGBOX_ENTRY.get());
+                    itemToGive.set(ModComponents.STORED_SU.get(), ((WinderBlockEntity) blockEntity).StoredSU);
                     player.addItem(itemToGive);
-//                    ((WinderBlockEntity) blockEntity).pop();
+                    ((WinderBlockEntity) blockEntity).pop(); // pop repurposed to reset StoredSU when emptied
                     level.setBlock(pos, state.setValue(FILLED, false), 3); // the new way
                 }
 
             }
-            CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED with something else");
+            //CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED with something else");
 
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
