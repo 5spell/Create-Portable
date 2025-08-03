@@ -1,6 +1,8 @@
 package net.vspell.createportable.block.winder;
 
+import com.simibubi.create.content.kinetics.KineticNetwork;
 import com.simibubi.create.content.kinetics.base.DirectionalShaftHalvesBlockEntity;
+import com.simibubi.create.foundation.item.KineticStats;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +23,9 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     public int StoredSU = 0;
     public int MaxStoredSU = 2000;
     public int BlockStress = 20; // TODO: add variable stress
-
+    public KineticNetwork network = this.network;
+    public float NetworkStress;
+    public float NetworkCapacity;
     public WinderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
 
@@ -36,11 +40,21 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
             boolean isFilled = getBlockState().getValue(WinderBlock.FILLED); // new FILLED property
 
-            CreatePortable.LOGGER.info("A WINDER IS BEING POWERED HOORAAAY YIPPPEEE");
+            //CreatePortable.LOGGER.info("A WINDER IS BEING POWERED HOORAAAY YIPPPEEE");
 
             if  (isFilled && (StoredSU < MaxStoredSU)) {
                 StoredSU = StoredSU + BlockStress;
             }
+        }
+        else
+        {
+            if(network != null)
+            {
+                NetworkStress = this.network.getActualStressOf(this);
+                NetworkCapacity = this.network.getActualCapacityOf(this);
+            }
+            setMode(WinderMode.DISCHARGING);
+            StoredSU = StoredSU - (int)(NetworkStress - NetworkCapacity);
         }
     }
 
@@ -60,7 +74,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
     @Override
     public float getGeneratedSpeed(){
-        if (false) { // temp
+        if (getMode() == WinderMode.DISCHARGING) { // temp
             return 16;
         }
         return 0;
