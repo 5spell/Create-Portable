@@ -2,15 +2,19 @@ package net.vspell.createportable.block.winder;
 
 import com.simibubi.create.content.kinetics.KineticNetwork;
 import com.simibubi.create.content.kinetics.base.DirectionalShaftHalvesBlockEntity;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.vspell.createportable.CreatePortable;
 
 
-public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
+public class WinderBlockEntity extends KineticBlockEntity {
 
     public enum WinderMode {
         CHARGING,
@@ -20,13 +24,12 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     private WinderMode mode = WinderMode.CHARGING;
 
     public boolean isPowered = false;
-    public int StoredSU = 0; //TODO: make SU stored on disk
     public int MaxStoredSU = 2000;
+    public int StoredSU = 0;
     public int BlockStress = 20; // TODO: add variable stress
     public KineticNetwork network;
     public float NetworkStress;
     public float NetworkCapacity;
-
     public WinderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
 
@@ -34,8 +37,9 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
 
     @Override
     public boolean isSource() {
-        //return source != null && mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0;
-        //return source != null && readyToGenerate();
+        // Crashes if true is returned
+        //return true;
+
         return mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0;
     }
 
@@ -46,6 +50,8 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     @Override
     public void tick() {
         super.tick();
+
+        KineticBlockEntity.switchToBlockState(level, worldPosition, getBlockState());
 
         if (source == null) {
             CreatePortable.LOGGER.warn("Winder source is null on tick.");
@@ -81,6 +87,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(compound, registries, clientPacket);
         mode = WinderMode.valueOf(compound.getString("Mode"));
+        StoredSU = compound.getInt("StoredSU");
     }
 
     // saving the mode to NBT
@@ -88,6 +95,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
     protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         super.write(compound, registries, clientPacket);
         compound.putString("Mode", mode.name());
+        compound.putInt("StoredSU", StoredSU);
     }
 
     @Override
@@ -100,7 +108,7 @@ public class WinderBlockEntity extends DirectionalShaftHalvesBlockEntity {
             return 0;
         }
         if (mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0)
-        { //TODO: fix crashes
+        {
             CreatePortable.LOGGER.info("Winder should be generating");
             return 16;
         }
