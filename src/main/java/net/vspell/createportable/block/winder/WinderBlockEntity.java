@@ -101,7 +101,7 @@ public class WinderBlockEntity extends GeneratingKineticBlockEntity {
         mode = isPowered ? WinderMode.DISCHARGING : WinderMode.CHARGING;
 
         if (mode == WinderMode.CHARGING) {
-            if (getBlockState().getValue(WinderBlock.FILLED) && StoredSU < MaxStoredSU) {
+            if (getBlockState().getValue(WinderBlock.FILLED) && StoredSU < MaxStoredSU && speed != 0) {
                 StoredSU += BlockStress;
             }
         } else {
