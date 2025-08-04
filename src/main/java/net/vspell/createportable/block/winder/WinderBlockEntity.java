@@ -38,9 +38,9 @@ public class WinderBlockEntity extends KineticBlockEntity {
     @Override
     public boolean isSource() {
         // Crashes if true is returned
-        //return true;
+        return true;
 
-        return mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0;
+        //return mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0;
     }
 
     private boolean readyToGenerate() {
@@ -104,9 +104,6 @@ public class WinderBlockEntity extends KineticBlockEntity {
                 "Mode: " + mode.toString() +
                 "\nIsPowered: " + isPowered +
                 "\nStoredSU: " + StoredSU);
-        if (level == null || source == null) {
-            return 0;
-        }
         if (mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0)
         {
             CreatePortable.LOGGER.info("Winder should be generating");
