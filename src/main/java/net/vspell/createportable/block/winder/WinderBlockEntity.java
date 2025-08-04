@@ -2,6 +2,7 @@ package net.vspell.createportable.block.winder;
 
 import com.simibubi.create.content.kinetics.KineticNetwork;
 import com.simibubi.create.content.kinetics.base.DirectionalShaftHalvesBlockEntity;
+import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,7 +15,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.vspell.createportable.CreatePortable;
 
 
-public class WinderBlockEntity extends KineticBlockEntity {
+public class WinderBlockEntity extends GeneratingKineticBlockEntity {
 
     public enum WinderMode {
         CHARGING,
@@ -30,6 +31,8 @@ public class WinderBlockEntity extends KineticBlockEntity {
     public KineticNetwork network;
     public float NetworkStress;
     public float NetworkCapacity;
+
+
     public WinderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
 
@@ -45,46 +48,81 @@ public class WinderBlockEntity extends KineticBlockEntity {
         return mode == WinderMode.DISCHARGING && isPowered && StoredSU > 0;
     }
 
+//    @Override
+//    public void tick() {
+//        super.tick();
+//
+//        //updating whether is receiving redstone
+//        assert level != null;
+//        isPowered = level.hasNeighborSignal(worldPosition);
+//
+//        float speed = getSpeed();
+//        //Setting Charge-discharge modes
+//        if (isPowered) {
+//            if (getBlockState().getValue(WinderBlock.FILLED)
+//                    && StoredSU < MaxStoredSU) {
+//                StoredSU += BlockStress;
+//            }
+//            setMode(WinderMode.CHARGING);
+//
+//        }
+//        else {
+//
+//            //Discharge logic
+//            setMode(WinderMode.DISCHARGING);
+//            //CreatePortable.LOGGER.info("DISCHARGING");
+//            network = getOrCreateNetwork();
+//            if (network != null) {
+//                NetworkStress = network.getActualStressOf(this);
+//                NetworkCapacity = network.getActualCapacityOf(this);
+//                StoredSU = Math.max(0, StoredSU - (int)(NetworkStress - NetworkCapacity));
+//            }
+//        }
+//        //Update kinetics if mode has changed
+//        if (wasDischarging != (mode == WinderMode.DISCHARGING))
+//        {
+//            //
+//            updateGeneratedRotation();
+//            //CreatePortable.LOGGER.info("Winder now " + mode.toString());
+//        }
+//        wasDischarging = (mode == WinderMode.DISCHARGING);
+//        notifyUpdate();
+//    }
+
     @Override
     public void tick() {
         super.tick();
-
-        //updating whether is receiving redstone
         assert level != null;
-        isPowered = level.hasNeighborSignal(worldPosition);
 
-        float speed = getSpeed();
-        //Setting Charge-discharge modes
-        if (speed != 0) {
-            if (getBlockState().getValue(WinderBlock.FILLED)
-                    && StoredSU < MaxStoredSU) {
+        isPowered = level.hasNeighborSignal(worldPosition);
+        WinderMode oldMode = mode;
+
+        // Decide mode based on redstone
+        mode = isPowered ? WinderMode.DISCHARGING : WinderMode.CHARGING;
+
+        if (mode == WinderMode.CHARGING) {
+            if (getBlockState().getValue(WinderBlock.FILLED) && StoredSU < MaxStoredSU) {
                 StoredSU += BlockStress;
             }
-            setMode(WinderMode.CHARGING);
-
-        }
-        else {
-
-            //Discharge logic
-            setMode(WinderMode.DISCHARGING);
-            //CreatePortable.LOGGER.info("DISCHARGING");
-            network = getOrCreateNetwork();
-            if (network != null) {
-                NetworkStress = network.getActualStressOf(this);
-                NetworkCapacity = network.getActualCapacityOf(this);
-                StoredSU = Math.max(0, StoredSU - (int)(NetworkStress - NetworkCapacity));
+        } else {
+            if (!level.isClientSide) {
+                if (StoredSU > 0) {
+                    network = getOrCreateNetwork();
+                    if (network != null) {
+                        NetworkStress = network.getActualStressOf(this);
+                        NetworkCapacity = network.getActualCapacityOf(this);
+                        StoredSU = Math.max(0, StoredSU - (int)(NetworkStress - NetworkCapacity));
+                    }
+                }
             }
         }
-        //Update kinetics if mode has changed
-        if (wasDischarging != (mode == WinderMode.DISCHARGING))
-        {
-            //
-            detachKinetics();
-            attachKinetics();
-            //CreatePortable.LOGGER.info("Winder now " + mode.toString());
+
+        // Update kinetic state only if mode changed
+        if (oldMode != mode) {
+            updateGeneratedRotation();
         }
-        wasDischarging = (mode == WinderMode.DISCHARGING);
     }
+
 
     // reading the mode from NBT
     @Override

@@ -93,12 +93,13 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
                 int storedSU = SpringboxItem.getStoredSU(itemInHand);
                 if(!state.getValue(FILLED)) // FILLED is the new filled property
                 {
-                    level.setBlock(pos, state.setValue(FILLED, true), 3); // properly updates the states
+                    level.setBlock(pos, state.setValue(FILLED, true), 3);
 
                     ((WinderBlockEntity) blockEntity).InsertSpringbox(SpringboxItem.getStoredSU(itemInHand));
+
                     itemInHand.shrink(1);
 
-                    return ItemInteractionResult.SUCCESS; // CONSUME stops further logic, we dgaf abt that
+                    return ItemInteractionResult.SUCCESS;
                 } else {
                     return ItemInteractionResult.FAIL;
                 }
@@ -108,13 +109,16 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
             else if (itemInHand.isEmpty())
             {
                 //CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED by an empty hand");
-                if(state.getValue(FILLED)) // FILLED is the new filled property
+                if(state.getValue(FILLED))
                 {
                     ItemStack itemToGive = new ItemStack(ModItems.SPRINGBOX_ENTRY.get());
-                    itemToGive.set(ModComponents.STORED_SU.get(), ((WinderBlockEntity) blockEntity).StoredSU);
                     player.addItem(itemToGive);
+
+                    itemToGive.set(ModComponents.STORED_SU.get(), ((WinderBlockEntity) blockEntity).StoredSU);
+
                     ((WinderBlockEntity) blockEntity).StoredSU = 0;
-                    level.setBlock(pos, state.setValue(FILLED, false), 3); // the new way
+
+                    level.setBlock(pos, state.setValue(FILLED, false), 3);
                 }
 
             }
