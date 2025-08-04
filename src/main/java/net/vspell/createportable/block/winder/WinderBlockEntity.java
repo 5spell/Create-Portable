@@ -172,10 +172,19 @@ public class WinderBlockEntity extends GeneratingKineticBlockEntity {
         sendData();
     }
 
-    public void InsertSpringbox(int Springbox_Charge)
+    public void insertSpringbox(int Springbox_Charge)
     {
         assert level != null;
         level.setBlock(worldPosition, getBlockState().setValue(WinderBlock.FILLED, true), 3);
         StoredSU = Springbox_Charge;
     }
+
+    public int removeSpringbox() {
+        level.setBlock(worldPosition, getBlockState().setValue(WinderBlock.FILLED, false), 3);
+        int suToReturn = StoredSU;
+        StoredSU = 0;
+        return suToReturn;
+    }
+
+
 }

@@ -95,7 +95,7 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
                 {
                     level.setBlock(pos, state.setValue(FILLED, true), 3);
 
-                    ((WinderBlockEntity) blockEntity).InsertSpringbox(SpringboxItem.getStoredSU(itemInHand));
+                    ((WinderBlockEntity) blockEntity).insertSpringbox(SpringboxItem.getStoredSU(itemInHand));
 
                     itemInHand.shrink(1);
 
@@ -114,16 +114,9 @@ public class WinderBlock extends RotatedPillarKineticBlock implements IBE<Winder
                     ItemStack itemToGive = new ItemStack(ModItems.SPRINGBOX_ENTRY.get());
                     player.addItem(itemToGive);
 
-                    itemToGive.set(ModComponents.STORED_SU.get(), ((WinderBlockEntity) blockEntity).StoredSU);
-
-                    ((WinderBlockEntity) blockEntity).StoredSU = 0;
-
-                    level.setBlock(pos, state.setValue(FILLED, false), 3);
+                    itemToGive.set(ModComponents.STORED_SU.get(), ((WinderBlockEntity) blockEntity).removeSpringbox());
                 }
-
             }
-            //CreatePortable.LOGGER.info("A WINDER HAS BEEN CLICKED with something else");
-
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
